@@ -109,9 +109,9 @@ void InsertSort(int arr[], int size) {
 **算法思想**：作为插入排序的改进版，希尔排序假设任意间隔`gap`内的元素都是有序的，这样优先插入排序间隔`gap`的若干个元素，然后逐渐减小`gap`值，直至`gap`值为1时便完成排序。
 **算法特点**：希尔排序相比插入排序更高效的原因在于其权衡了子数组的规模和有序性。
 **算法步骤**：
-    1. 初始化`gap=N/2`，则原序列中存在间隔为`gap`的若干组无序元素序列，对这些无序序列分别使用插入排序有序化;
-    2. 缩小间隔`gap=gap/2`，将原序列中间隔`gap`的无序序列可以分别使用插入排序有序化;
-    3. 重复步骤3，直到`gap=1`时，再次使用插入排序，原序列排序即可完成。
+       1. 初始化`gap=N/2`，则原序列中存在间隔为`gap`的若干组无序元素序列，对这些无序序列分别使用插入排序有序化;
+       2. 缩小间隔`gap=gap/2`，将原序列中间隔`gap`的无序序列可以分别使用插入排序有序化;
+       3. 重复步骤2，直到`gap=1`时，再次使用插入排序，原序列排序即可完成。
 
 **CPP代码**：
 
@@ -134,7 +134,60 @@ void ShellSort(int arr[], int size) {
 
 ### 归并排序(Merge Sort)
 
-TODO
+**算法思想**：归并排序是分治法的典型应用。它通过将已有的子序列合并，来得到有序的完整序列。如果是两个有序表合并为一个有序表，称之为2-路归并。
+
+**算法特点**：性能稳定，与选择排序类似，归并排序并不受输入数据的影响，但性能优于前者，其时间复杂度为O(n*logn)，但空间复杂度较高，因为在排序过程中需要额外的内存空间。
+
+**算法步骤**：
+
+1. 将长度为N的序列分成两个长度为N/2的子序列；
+2. 对子序列重复进行步骤1的划分，直到不能分割为止；
+3. 对以上子序列进行两两归并，直到合并成一个有序的序列。
+
+**CPP代码**：
+
+```c++
+// 归并排序（Merge Sort）
+void MergeSort(int arr[], int size) {
+    if (size < 2)
+        return;
+
+    int mid = size / 2;
+    int *L = new int[mid];
+    int *R = new int[size - mid];
+
+    for (int i = 0; i < mid; ++i)
+        L[i] = arr[i];
+    for (int j = mid; j < size; ++j)
+        R[j - mid] = arr[j];
+
+    MergeSort(L, mid);
+    MergeSort(R, size - mid);
+    Merge(arr, L, mid, R, size - mid);
+
+    delete[]R;
+    delete[]L;
+}
+
+void Merge(int arr[], const int *L, int leftCount, const int *R, int rightCount) {
+    int i = 0, j = 0, k = 0;
+
+    while (i < leftCount && j < rightCount) {
+        if (L[i] < R[j])
+            arr[k++] = L[i++];
+        else
+            arr[k++] = R[j++];
+    }
+
+    while (i < leftCount)
+        arr[k++] = L[i++];
+
+    while (j < rightCount)
+        arr[k++] = R[j++];
+}
+```
+
+
 
 ### 快速排序(Quick Sort)
 
